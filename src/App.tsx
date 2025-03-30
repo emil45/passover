@@ -5,6 +5,8 @@ import { HomePage } from "@/pages/HomePage";
 import { ContactDialog } from "@/components/ContactDialog";
 import { TopBar } from "./components/TopBar";
 import { ScrollToTopButton } from "./components/ScrollToTopButton";
+import { Route, Routes, useLocation } from "react-router";
+import GlossaryPage from "./pages/GlossaryPage";
 
 function App() {
   const [selectedTribe, setSelectedTribe] = useState<string>("east");
@@ -12,6 +14,7 @@ function App() {
   const [searchPerformed, setSearchPerformed] = useState<boolean>(false);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [contactOpen, setContactOpen] = useState<boolean>(false);
+  const location = useLocation();
 
   // Get the tools for the selected tribe
   const tribeTools = tribesData[selectedTribe] || [];
@@ -57,14 +60,23 @@ function App() {
         isOpen={sidebarOpen}
         toggleSidebar={toggleSidebar}
         openContactDialog={openContactDialog}
+        currentPath={location.pathname}
       />
-      <HomePage
-        searchQuery={searchQuery}
-        onSearch={handleSearch}
-        tools={filteredTools}
-        searchPerformed={searchPerformed}
-        openContactDialog={openContactDialog}
-      />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <HomePage
+              searchQuery={searchQuery}
+              onSearch={handleSearch}
+              tools={filteredTools}
+              searchPerformed={searchPerformed}
+              openContactDialog={openContactDialog}
+            />
+          }
+        />
+        <Route path="/glossary" element={<GlossaryPage />} />
+      </Routes>
       <ContactDialog open={contactOpen} onOpenChange={setContactOpen} />
       <ScrollToTopButton />
     </div>

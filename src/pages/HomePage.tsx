@@ -53,7 +53,7 @@ export function HomePage({
           <motion.div
             className={`w-full mx-auto ${
               searchPerformed || isTyping
-                ? "mt-4 md:mt-16 mb-8"
+                ? "mt-4 md:mt-16 mb-2"
                 : "flex flex-col items-center justify-center min-h-[60vh]"
             }`}
             initial={false}
@@ -95,7 +95,7 @@ export function HomePage({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="space-y-6 w-full"
+                className="space-y-4 w-full"
               >
                 {tools.length > 0 ? (
                   tools.map((tool, index) => (

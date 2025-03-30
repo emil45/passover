@@ -1,6 +1,7 @@
-import { Settings, MessageCircle, X } from "lucide-react";
+import { Settings, MessageCircle, X, Book, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { tribes } from "@/lib/data";
+import { Link } from "react-router";
 
 interface SidebarProps {
   selectedTribe: string;
@@ -8,6 +9,7 @@ interface SidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
   openContactDialog: () => void;
+  currentPath: string;
 }
 
 export function Sidebar({
@@ -16,7 +18,10 @@ export function Sidebar({
   isOpen,
   toggleSidebar,
   openContactDialog,
+  currentPath,
 }: SidebarProps) {
+  const isGlossaryActive = currentPath === "/glossary";
+
   return (
     <>
       {/* Sidebar backdrop for mobile */}
@@ -48,6 +53,32 @@ export function Sidebar({
               <X className="h-5 w-5" />
               <span className="sr-only">סגור</span>
             </Button>
+          </div>
+
+          <div className="mb-8">
+            <h3 className="text-lg font-medium mb-3">עמודים</h3>
+            <div className="space-y-2">
+              <Button
+                variant={currentPath === "/" ? "default" : "outline"}
+                className="w-full justify-start"
+                asChild
+              >
+                <Link to="/">
+                  <Home className="h-4 w-4 ml-2" />
+                  דף הבית
+                </Link>
+              </Button>
+              <Button
+                variant={isGlossaryActive ? "default" : "outline"}
+                className="w-full justify-start"
+                asChild
+              >
+                <Link to="/glossary">
+                  <Book className="h-4 w-4 ml-2" />
+                  <span>מילון מונחים</span>
+                </Link>
+              </Button>
+            </div>
           </div>
 
           <div className="mb-8">
