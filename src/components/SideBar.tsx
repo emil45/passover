@@ -1,6 +1,5 @@
-import { Settings, Moon, Sun, MessageCircle } from "lucide-react";
+import { Settings, MessageCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useTheme } from "next-themes";
 import { tribes } from "@/lib/data";
 
 interface SidebarProps {
@@ -15,50 +14,39 @@ export function Sidebar({
   selectedTribe,
   onTribeChange,
   isOpen,
+  toggleSidebar,
   openContactDialog,
 }: SidebarProps) {
-  const { theme, setTheme } = useTheme();
-
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
-
   return (
     <>
       {/* Sidebar backdrop for mobile */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 md:hidden"
-          onClick={() => {}}
+          onClick={toggleSidebar}
         />
       )}
 
       {/* Sidebar */}
       <aside
         className={`
-          w-64 bg-card border-l border-border shadow-lg z-40
+          w-64 bg-card border-l border-border shadow-lg z-50
           fixed top-0 right-0 h-full
           transition-transform duration-300 ease-in-out
           ${isOpen ? "translate-x-0" : "translate-x-full"}
         `}
       >
-        <div className="flex flex-col h-full p-4">
+        <div className="flex flex-col h-full p-4 pt-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-xl font-bold">הגדרות</h2>
             <Button
-              variant="ghost"
+              variant="outline"
               size="icon"
-              onClick={toggleTheme}
+              onClick={toggleSidebar}
               className="hover:bg-muted"
             >
-              {theme === "dark" ? (
-                <Sun className="h-5 w-5" />
-              ) : (
-                <Moon className="h-5 w-5" />
-              )}
-              <span className="sr-only">
-                {theme === "dark" ? "מצב יום" : "מצב לילה"}
-              </span>
+              <X className="h-5 w-5" />
+              <span className="sr-only">סגור</span>
             </Button>
           </div>
 
@@ -68,6 +56,7 @@ export function Sidebar({
               {tribes.map((tribe) => (
                 <Button
                   key={tribe.id}
+                  disabled={tribe.disabled}
                   variant={selectedTribe === tribe.id ? "default" : "outline"}
                   className="w-full justify-start"
                   onClick={() => onTribeChange(tribe.id)}

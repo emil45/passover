@@ -2,19 +2,17 @@ import type React from "react";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Search, XCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Search, XCircle } from "lucide-react";
+import { ToolData } from "@/types/tool";
 import { Input } from "@/components/ui/input";
-import type { ToolData } from "@/lib/data";
+import { Button } from "@/components/ui/button";
 import { ToolCard } from "@/components/ToolCard";
 
-interface MainContentProps {
+interface HomePageProps {
   searchQuery: string;
   onSearch: (query: string) => void;
   tools: ToolData[];
   searchPerformed: boolean;
-  toggleSidebar: () => void;
-  sidebarOpen: boolean;
   openContactDialog: () => void;
 }
 
@@ -23,9 +21,7 @@ export function HomePage({
   onSearch,
   tools,
   searchPerformed,
-  toggleSidebar,
-  sidebarOpen,
-}: MainContentProps) {
+}: HomePageProps) {
   const [localSearch, setLocalSearch] = useState(searchQuery);
   const [isTyping, setIsTyping] = useState(false);
 
@@ -52,24 +48,12 @@ export function HomePage({
 
   return (
     <div className="absolute inset-0 w-full">
-      {/* Sidebar toggle button */}
-      <Button
-        variant="outline"
-        size="icon"
-        className={`fixed top-4 ${
-          sidebarOpen ? "right-[260px] md:right-[260px]" : "right-4"
-        } z-50 transition-all duration-300`}
-        onClick={toggleSidebar}
-      >
-        {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-      </Button>
-
-      <main className="flex justify-center w-full min-h-screen p-4 md:p-8">
+      <main className="flex justify-center w-full min-h-screen p-4 md:p-8 pt-20">
         <div className="w-full max-w-2xl">
           <motion.div
             className={`w-full mx-auto ${
               searchPerformed || isTyping
-                ? "mt-16 mb-8"
+                ? "mt-4 md:mt-16 mb-8"
                 : "flex flex-col items-center justify-center min-h-[60vh]"
             }`}
             initial={false}
@@ -79,20 +63,6 @@ export function HomePage({
             }}
             transition={{ duration: 0.3 }}
           >
-            <AnimatePresence>
-              {!isTyping && !searchPerformed && (
-                <motion.h1
-                  className="text-4xl md:text-5xl font-bold text-center mb-6"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  הכשרת כלים לפסח
-                </motion.h1>
-              )}
-            </AnimatePresence>
-
             <div className="relative w-full">
               <div className="relative">
                 <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -130,7 +100,7 @@ export function HomePage({
                 {tools.length > 0 ? (
                   tools.map((tool, index) => (
                     <motion.div
-                      key={tool.tool}
+                      key={tool.tool + index}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -144,7 +114,7 @@ export function HomePage({
                       לא נמצאו תוצאות עבור &quot;{localSearch}&quot;
                     </p>
                     <p className="text-muted-foreground mt-2">
-                      נסה לחפש מונח אחר או בחר שבט אחר
+                      נסה לחפש מונח אחר
                     </p>
                   </div>
                 )}

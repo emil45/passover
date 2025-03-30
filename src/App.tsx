@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { toolsData } from "@/lib/data";
+import { tribesData } from "@/lib/data";
 import { Sidebar } from "@/components/SideBar";
 import { HomePage } from "@/pages/HomePage";
 import { ContactDialog } from "@/components/ContactDialog";
+import { TopBar } from "./components/TopBar";
+import { ScrollToTopButton } from "./components/ScrollToTopButton";
 
 function App() {
   const [selectedTribe, setSelectedTribe] = useState<string>("east");
@@ -11,21 +13,23 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [contactOpen, setContactOpen] = useState<boolean>(false);
 
-  const filteredTools = toolsData.filter((tool) => {
-    // Filter by tribe
-    if (tool.tribe !== selectedTribe && tool.tribe !== "all") return false;
+  // Get the tools for the selected tribe
+  const tribeTools = tribesData[selectedTribe] || [];
 
-    // Filter by search query
-    if (!searchQuery.trim()) return false;
+  // Filter tools based on search query
+  const filteredTools =
+    searchQuery.trim() === ""
+      ? []
+      : tribeTools.filter((tool) => {
+          const query = searchQuery.trim().toLowerCase();
+          const toolName = tool.tool.toLowerCase();
+          const aliases = tool.aliases.map((alias) => alias.toLowerCase());
 
-    const query = searchQuery.trim().toLowerCase();
-    const toolName = tool.tool.toLowerCase();
-    const aliases = tool.aliases.map((alias) => alias.toLowerCase());
-
-    return (
-      toolName.includes(query) || aliases.some((alias) => alias.includes(query))
-    );
-  });
+          return (
+            toolName.includes(query) ||
+            aliases.some((alias) => alias.includes(query))
+          );
+        });
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -46,6 +50,7 @@ function App() {
 
   return (
     <div className="relative min-h-screen">
+      <TopBar toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
       <Sidebar
         selectedTribe={selectedTribe}
         onTribeChange={handleTribeChange}
@@ -58,11 +63,10 @@ function App() {
         onSearch={handleSearch}
         tools={filteredTools}
         searchPerformed={searchPerformed}
-        toggleSidebar={toggleSidebar}
-        sidebarOpen={sidebarOpen}
         openContactDialog={openContactDialog}
       />
       <ContactDialog open={contactOpen} onOpenChange={setContactOpen} />
+      <ScrollToTopButton />
     </div>
   );
 }

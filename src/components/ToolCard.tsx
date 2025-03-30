@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, BookOpen, AlertCircle } from "lucide-react";
+import { ChevronDown, Lock, AlertCircle, BookOpen, Fence } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import type { ToolData } from "@/lib/data";
+import { ToolData } from "@/types/tool";
 
 interface ToolCardProps {
   tool: ToolData;
@@ -19,17 +19,13 @@ export function ToolCard({ tool }: ToolCardProps) {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
-      whileHover={{ y: -2 }}
       transition={{ duration: 0.2 }}
     >
       <Card className="overflow-hidden border-2 hover:border-primary/20 transition-all duration-300 bg-card/50 backdrop-blur-sm">
         <CardContent className="p-0">
           {/* Card Header with Emoji and Title */}
           <div className="relative overflow-hidden">
-            <div className="absolute -right-6 -top-6 text-8xl opacity-5 rotate-12 select-none pointer-events-none">
-              {tool.emoji}
-            </div>
-            <div className="p-5 pb-3 flex items-start gap-4">
+            <div className="px-5 pb-3 flex items-start gap-4">
               <div className="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-primary/10 text-primary text-2xl">
                 {tool.emoji}
               </div>
@@ -112,7 +108,10 @@ export function ToolCard({ tool }: ToolCardProps) {
 
                   {tool.chumrot.length > 0 && (
                     <div>
-                      <h4 className="font-medium text-sm mb-2">חומרות:</h4>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Fence className="h-4 w-4 text-primary" />
+                        <h4 className="font-medium text-sm">חומרות:</h4>
+                      </div>
                       <ul className="space-y-1.5 text-muted-foreground">
                         {tool.chumrot.map((chumra, index) => (
                           <li
