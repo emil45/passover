@@ -58,6 +58,12 @@ export default function GlossaryPage() {
     setSearchQuery("");
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      (e.target as HTMLInputElement).blur();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background pt-16">
       <title>מילון מונחים להכשרת כלים לפסח | הכשרת כלים לפסח</title>
@@ -107,6 +113,7 @@ export default function GlossaryPage() {
               className="h-12 pr-12 pl-12 text-lg rounded-2xl shadow-md"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"

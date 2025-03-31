@@ -5,12 +5,14 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ToolData } from "@/types/tool";
+import { useIsIOS } from "@/hooks/useIsIos";
 
 interface ToolCardProps {
   tool: ToolData;
 }
 
 export function ToolCard({ tool }: ToolCardProps) {
+  const isIOS = useIsIOS();
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -26,7 +28,10 @@ export function ToolCard({ tool }: ToolCardProps) {
           {/* Card Header with Emoji and Title */}
           <div className="relative overflow-hidden">
             <div className="px-5 pb-3 flex items-start gap-4">
-              <div className="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-primary/10 text-primary text-2xl">
+              <div
+                className={`flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-primary/10 text-primary text-2xl 
+                  ${isIOS ? "pt-2" : ""}`}
+              >
                 {tool.emoji}
               </div>
               <div className="flex-1">
@@ -37,7 +42,7 @@ export function ToolCard({ tool }: ToolCardProps) {
                       <Badge
                         key={index}
                         variant="outline"
-                        className="text-xs font-normal"
+                        className={`text-xs font-normal ${isIOS ? "pt-1" : ""}`}
                       >
                         {alias}
                       </Badge>

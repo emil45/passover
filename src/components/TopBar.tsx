@@ -25,7 +25,6 @@ export function TopBar({ toggleSidebar, sidebarOpen }: TopBarProps) {
               <Menu className="h-5 w-5" />
             )}
           </Button>
-          <h1 className="text-xl font-bold self-center">הכשרת כלים לפסח</h1>
         </div>
         <div>
           <Button

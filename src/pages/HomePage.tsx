@@ -1,9 +1,11 @@
+"use client";
+
 import type React from "react";
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, XCircle } from "lucide-react";
-import { ToolData } from "@/types/tool";
+import type { ToolData } from "@/types/tool";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ToolCard } from "@/components/ToolCard";
@@ -43,6 +45,12 @@ export function HomePage({
     onSearch(value); // Trigger search on every keystroke
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      (e.target as HTMLInputElement).blur();
+    }
+  };
+
   const handleInputFocus = () => {
     setIsTyping(localSearch.length > 0);
   };
@@ -59,7 +67,11 @@ export function HomePage({
 
   return (
     <div className="absolute inset-0 w-full">
-      <main className="flex justify-center w-full min-h-screen p-4 md:p-8 pt-20">
+      <main
+        className={`flex justify-center w-full min-h-screen p-4 md:p-8 ${
+          shouldCenter ? "pt-0" : "pt-20"
+        }`}
+      >
         <div className="w-full max-w-2xl">
           <motion.div
             className={`w-full mx-auto ${
@@ -74,6 +86,23 @@ export function HomePage({
             }}
             transition={{ duration: 0.3 }}
           >
+            <AnimatePresence>
+              {shouldCenter && (
+                <motion.div
+                  className="text-center mb-6 w-full"
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <h1 className="text-3xl font-bold mb-2">הכשרת כלים לפסח</h1>
+                  <p className="text-muted-foreground">
+                    מצא את דרך ההכשרה המתאימה לכל כלי
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <div className="relative w-full max-w-2xl mx-auto">
               <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" />
               <Input
@@ -83,6 +112,7 @@ export function HomePage({
                 value={localSearch}
                 onChange={handleInputChange}
                 onFocus={handleInputFocus}
+                onKeyDown={handleKeyDown}
                 autoComplete="off"
                 autoCorrect="off"
                 autoCapitalize="off"
