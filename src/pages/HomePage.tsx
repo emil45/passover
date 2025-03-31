@@ -93,7 +93,7 @@ export function HomePage({
                   initial={{ opacity: 1 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0 }}
                 >
                   <h1 className="text-3xl font-bold mb-2">הכשרת כלים לפסח</h1>
                   <p className="text-muted-foreground">
