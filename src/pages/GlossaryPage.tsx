@@ -104,9 +104,13 @@ export default function GlossaryPage() {
             <Input
               type="text"
               placeholder="חפש מונח..."
-              className="h-12 pr-12 pl-12 text-lg rounded-full shadow-md"
+              className="h-12 pr-12 pl-12 text-lg rounded-2xl shadow-md"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
             />
             {searchQuery && (
               <Button

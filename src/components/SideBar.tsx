@@ -62,6 +62,9 @@ export function Sidebar({
                 variant={currentPath === "/" ? "default" : "outline"}
                 className="w-full justify-start"
                 asChild
+                onClick={() => {
+                  toggleSidebar();
+                }}
               >
                 <Link to="/">
                   <Home className="h-4 w-4 ml-2" />
@@ -72,6 +75,9 @@ export function Sidebar({
                 variant={isGlossaryActive ? "default" : "outline"}
                 className="w-full justify-start"
                 asChild
+                onClick={() => {
+                  toggleSidebar();
+                }}
               >
                 <Link to="/glossary">
                   <Book className="h-4 w-4 ml-2" />

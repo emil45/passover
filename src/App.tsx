@@ -3,10 +3,11 @@ import { tribesData } from "@/lib/data";
 import { Sidebar } from "@/components/SideBar";
 import { HomePage } from "@/pages/HomePage";
 import { ContactDialog } from "@/components/ContactDialog";
-import { TopBar } from "./components/TopBar";
-import { ScrollToTopButton } from "./components/ScrollToTopButton";
+import { TopBar } from "@/components/TopBar";
+import { ScrollToTopButton } from "@/components/ScrollToTopButton";
 import { Route, Routes, useLocation } from "react-router";
-import GlossaryPage from "./pages/GlossaryPage";
+import GlossaryPage from "@/pages/GlossaryPage";
+import { Footer } from "@/components/Footer";
 
 function App() {
   const [selectedTribe, setSelectedTribe] = useState<string>("east");
@@ -52,7 +53,7 @@ function App() {
   };
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen flex flex-col">
       <TopBar toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
       <Sidebar
         selectedTribe={selectedTribe}
@@ -62,21 +63,26 @@ function App() {
         openContactDialog={openContactDialog}
         currentPath={location.pathname}
       />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <HomePage
-              searchQuery={searchQuery}
-              onSearch={handleSearch}
-              tools={filteredTools}
-              searchPerformed={searchPerformed}
-              openContactDialog={openContactDialog}
-            />
-          }
-        />
-        <Route path="/glossary" element={<GlossaryPage />} />
-      </Routes>
+
+      <div className="flex-1">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomePage
+                searchQuery={searchQuery}
+                onSearch={handleSearch}
+                tools={filteredTools}
+                searchPerformed={searchPerformed}
+                openContactDialog={openContactDialog}
+              />
+            }
+          />
+          <Route path="/glossary" element={<GlossaryPage />} />
+        </Routes>
+      </div>
+
+      <Footer />
       <ContactDialog open={contactOpen} onOpenChange={setContactOpen} />
       <ScrollToTopButton />
     </div>

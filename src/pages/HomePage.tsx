@@ -24,10 +24,17 @@ export function HomePage({
 }: HomePageProps) {
   const [localSearch, setLocalSearch] = useState(searchQuery);
   const [isTyping, setIsTyping] = useState(false);
+  const [hasSearchedOnce, setHasSearchedOnce] = useState(searchPerformed);
 
   useEffect(() => {
     setLocalSearch(searchQuery);
   }, [searchQuery]);
+
+  useEffect(() => {
+    if (searchPerformed && !hasSearchedOnce) {
+      setHasSearchedOnce(true);
+    }
+  }, [searchPerformed, hasSearchedOnce]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -46,46 +53,52 @@ export function HomePage({
     onSearch("");
   };
 
+  // Determine if search should be centered or at the top
+  const shouldCenter =
+    !hasSearchedOnce && !searchPerformed && !isTyping && !localSearch;
+
   return (
     <div className="absolute inset-0 w-full">
       <main className="flex justify-center w-full min-h-screen p-4 md:p-8 pt-20">
         <div className="w-full max-w-2xl">
           <motion.div
             className={`w-full mx-auto ${
-              searchPerformed || isTyping
-                ? "mt-4 md:mt-16 mb-2"
-                : "flex flex-col items-center justify-center min-h-[60vh]"
+              shouldCenter
+                ? "flex flex-col items-center justify-center min-h-[60vh]"
+                : "mt-4 md:mt-18"
             }`}
             initial={false}
             animate={{
               y: searchPerformed || isTyping ? -20 : 0,
-              scale: searchPerformed || isTyping ? 0.95 : 1,
+              scale: 1,
             }}
             transition={{ duration: 0.3 }}
           >
-            <div className="relative w-full">
-              <div className="relative">
-                <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input
-                  type="text"
-                  placeholder="חפש כלי (לדוגמה: סיר, מחבת, כוס)"
-                  className="h-14 pr-12 pl-12 text-lg rounded-full shadow-md"
-                  value={localSearch}
-                  onChange={handleInputChange}
-                  onFocus={handleInputFocus}
-                />
-                {localSearch && (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 h-8 w-8 text-muted-foreground hover:text-foreground"
-                    onClick={clearSearch}
-                  >
-                    <XCircle className="h-5 w-5" />
-                    <span className="sr-only">נקה חיפוש</span>
-                  </Button>
-                )}
-              </div>
+            <div className="relative w-full max-w-2xl mx-auto">
+              <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" />
+              <Input
+                type="text"
+                placeholder="חפש כלי (לדוגמה: סיר, מחבת, כוס)"
+                className="h-14 pr-12 pl-12 text-lg rounded-2xl shadow-md"
+                value={localSearch}
+                onChange={handleInputChange}
+                onFocus={handleInputFocus}
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck="false"
+              />
+              {localSearch && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 h-8 w-8 text-muted-foreground hover:text-foreground"
+                  onClick={clearSearch}
+                >
+                  <XCircle className="h-5 w-5" />
+                  <span className="sr-only">נקה חיפוש</span>
+                </Button>
+              )}
             </div>
           </motion.div>
 
