@@ -5,7 +5,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ToolData } from "@/types/tool";
-import { useIsIOS } from "@/hooks/useIsIos";
+import { useIsIOS } from "@/hooks/useIsIOS";
 
 interface ToolCardProps {
   tool: ToolData;
