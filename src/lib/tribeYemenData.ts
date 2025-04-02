@@ -1,4 +1,4 @@
-[
+export const yemenData = [
   {
     "tool": "שיש",
     "aliases": ["מטבח"],
